@@ -62,14 +62,12 @@ function App() {
       setMessageColor('text-red-500');
       return;
     }
-
     if(databaseID) {
       setMessage('Here is your database connection string, go to the docs for more information');
       setAuth(true);
       setDisplayCodeInput(false);
       return;
     }
-
     setLoading(true);
     const result = await createDatabase(email);
     if(!result || result.error) {
@@ -82,6 +80,7 @@ function App() {
     setMessage('Here is your database connection string, go to the docs for more information');
     setDatabaseID(result.id);
     setUserEmail(email);
+    setAuth(true);
     setLoading(false);
   }
 
@@ -91,30 +90,17 @@ function App() {
     setLoading(true);
     let code = Math.floor(100000 + Math.random() * 900000) + "";
     setVarificationCode(code);
-
     const result = await checkAccount(email, code);
-
     if(!result || result.error) {
       setMessage('There was an error checking your account');
       setMessageColor('text-red-500');
       setLoading(false);
       return;
     }
-
     setDatabaseID(result.id);
     setMessage('verification code sent to' + email);
     setMessageColor('text-blue-500');
     setDisplayCodeInput(true);
-
-    /*if(result.email) {
-      setMessage('verification code sent to' + email);
-      setMessageColor('text-blue-500');
-      setDisplayCodeInput(true);
-    } else {
-      setMessage('Here is your database connection string, go to the docs for more information');
-      setDatabaseID(result.id);
-      setUserEmail(email);
-    } */
     setUserEmail(email);
     setLoading(false);
   };
@@ -132,6 +118,7 @@ function App() {
     if(dbID && email) {
       setDatabaseID(dbID);
       setUserEmail(email);
+      setAuth(true);
     }
   }, []);
 
