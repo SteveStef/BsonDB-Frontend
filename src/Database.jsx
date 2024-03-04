@@ -64,7 +64,13 @@ function Database({ setViewDB, email, databaseID }) {
       setLoading(false);
       return;
     }
-    setTableNames(result);
+    if(result.length === 0) {
+      setTableNames([]);
+    } else if(result.length === 1 && result[0] === '') {
+      setTableNames([]);
+    } else {
+      setTableNames(result);
+    }
     setLoading(false);
   }
 
@@ -118,7 +124,7 @@ function Database({ setViewDB, email, databaseID }) {
       <div className="relative py-3 sm:mx-auto">
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-light-blue-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
         <div className="relative px-4 py-10 bg-gray-100 shadow-lg sm:rounded-3xl sm:p-20 max-w-screen-xl mx-auto overflow-y-auto" 
-          style={{minWidth: "500px", maxHeight: '700px'}}>
+          style={{minWidth: "700px", maxHeight: '1000px'}}>
 
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <button
@@ -151,9 +157,9 @@ function Database({ setViewDB, email, databaseID }) {
             </div>
             ) 
             : viewTable ? (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto" style={{ maxHeight: "450px"}}>
                   { tables.length === 0 && <div>No data in this table</div> }
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-gray-200" style={{maxHeight: "300px"}}>
                   <thead className="bg-gray-50">
                     <tr>
                       {Object.entries(maxColumns).map(([key, _], index) => (
@@ -177,7 +183,7 @@ function Database({ setViewDB, email, databaseID }) {
                 </table>
               </div>
             ) : (
-                <>
+              <div className="overflow-x-auto" style={{ maxHeight: "450px"}}>
                   {
                     tableNames.map((name, i) => {
                       return (
@@ -202,7 +208,7 @@ function Database({ setViewDB, email, databaseID }) {
                     }
                     )
                   }
-                </>
+                </div>
               )
           }
 
