@@ -66,7 +66,7 @@ function Test() {
     //console.log(data);
     if(data.error) {
       console.log(data.error);
-      setMessage("Failed to login, please try again later.");
+      setMessage(data.error);
       setMessageColor('text-red-500');
       setLoading(false);
       return;
@@ -92,7 +92,7 @@ function Test() {
     const data = await response.json();
     if(data.error) {
       console.log(data.error);
-      setMessage("Failed to create account, please try again later.");
+      setMessage(data.error);
       setMessageColor('text-red-500');
       setLoading(false);
       return;
@@ -123,7 +123,7 @@ function Test() {
       const data = await response.json();
       if(data.error) {
         console.log(data.error);
-        setMessage("Failed to verify email, please try again later.");
+        setMessage(data.error);
         setMessageColor('text-red-500');
         setLoading(false);
         return;
@@ -164,7 +164,7 @@ function Test() {
       //console.log(data);
       if(data.error) {
         console.log(data.error);
-        setMessage("Failed to send verification code, please try again later.");
+        setMessage(data.error);
         setMessageColor('text-red-500');
         setLoading(false);
         return;
