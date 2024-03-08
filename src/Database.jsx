@@ -4,20 +4,9 @@ import Header from './Header';
 import { useEffect } from 'react';
 import { deleteDatabase, getTable, getDatabaseTblNames } from './utils';
 
-const getDatabaseFromCookie = (name) => {
-  const cookie = document.cookie.split(';');
-  for (let i = 0; i < cookie.length; i++) {
-    let c = cookie[i];
-    if(c.includes(name)) {
-      return c.split('=')[1];
-    }
-  }
-  return '';
-};
-
 function Database({ setViewDB, email, databaseID }) {
-  const [database, setDatabase] = useState(databaseID || getDatabaseFromCookie('databaseID'));
-  const [userEmail, setUserEmail] = useState(email || getDatabaseFromCookie('email'));
+  const [database, setDatabase] = useState(databaseID || "");
+  const [userEmail, setUserEmail] = useState(email || "");
   const [message, setMessage] = useState('');
   const [messageColor, setMessageColor] = useState('text-gray-600');
   const [tableNames, setTableNames] = useState([]);
@@ -38,14 +27,16 @@ function Database({ setViewDB, email, databaseID }) {
     }
     const result = await deleteDatabase(database, userEmail);
     if(!result || result.error) {
-      setMessage('There was an error deleting your database');
+      console.log(result);
+      setMessage('There was an error ' + result? result.error : 'deleting the database');
       setMessageColor('text-red-500');
       return;
     }
     setLoading(false);
     setModal(false);
-    document.cookie = 'email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
-    document.cookie = 'databaseID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+    setUserEmail('');
+    setDatabase('');
     window.location.reload();
   }
 
@@ -58,8 +49,10 @@ function Database({ setViewDB, email, databaseID }) {
       return;
     }
     const result = await getDatabaseTblNames(database);
+    //console.log(result);
     if(!result || result.error) {
-      setMessage('There was error');
+      console.log(result);
+      setMessage('There was an error ' + result? result.error : 'retrieving the database tables');
       setMessageColor('text-red-500');
       setLoading(false);
       return;
@@ -110,12 +103,7 @@ function Database({ setViewDB, email, databaseID }) {
   }
 
   useEffect(() => {
-    if(database && userEmail) fetchDB();
-    else {
-      setMessage('Enter your email in the first page... idk who you are');
-      setMessageColor('text-red-600');
-      setLoading(false);
-    }
+    fetchDB();
   }, [database, userEmail]);
 
   return (

@@ -5,15 +5,18 @@ const Header = ({ setViewDB, user }) => {
   const [show, setShow] = useState(false);
 
   const logout = () => {
-    document.cookie = 'email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    document.cookie = 'databaseID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     window.location.reload();
   };
 
   return (
     <header className="fixed top-0 left-0 w-full bg-gray-900 text-white z-50 shadow-md">
       <div className="container mx-auto px-4 py-2 flex justify-between items-center">
-        <div onClick={() => setViewDB(false)} className="text-lg font-semibold cursor-pointer">
+        <div onClick={() => {
+          setViewDB(false)
+          //window.location.href = `/`
+        }}
+          className="text-lg font-semibold cursor-pointer">
           BsonDB
         </div>
         <nav className="flex space-x-4">
@@ -21,7 +24,8 @@ const Header = ({ setViewDB, user }) => {
           <span onClick={() => {
             setViewDB(true)
           }}
-          className="hover:text-gray-300 cursor-pointer">My Database</span>
+            style={{ cursor: user ? "pointer" : "not-allowed" }}
+          className="hover:text-gray-300">My Database</span>
           <span onClick={() => setShow(true)} className={`${user ? "cursor-pointer" : ""}`}>{user || "Guest"}</span>
 
           {show && user && (

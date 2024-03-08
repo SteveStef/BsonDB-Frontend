@@ -1,6 +1,4 @@
-
 const server = import.meta.env.VITE_SERVER_URL;
-const auth = import.meta.env.VITE_AUTHORIZATION;
 
 const defaultHeaders = { 'Content-Type': 'application/json' };
 
@@ -19,22 +17,15 @@ const apiRequest = async (method, path, body = null) => {
   }
 };
 
-async function checkAccount(email, code) {
-  defaultHeaders['Authorization'] = auth;
-  let response = await apiRequest('POST', `/api/check-account`, { email, code });
-  defaultHeaders['Authorization'] = null;
-  return response;
-}
-
-async function createDatabase(email) {
-  defaultHeaders['Authorization'] = auth;
-  let result = await apiRequest('POST', '/api/createdb', {email});
-  defaultHeaders['Authorization'] = null;
-  return result;
-}
+const getToken = (name) => {
+  const cookie = document.cookie.split(';').find(c => c.trim().startsWith(name));
+  if (!cookie) return null;
+  return cookie.split('=')[1];
+};
 
 async function deleteDatabase(id, email) {
-  defaultHeaders['Authorization'] = auth;
+  const token = getToken('token');
+  defaultHeaders['Authorization'] = token;
   let body = { databaseId: id, email };
   let result = await apiRequest('POST', `/api/deletedb`, body);
   defaultHeaders['Authorization'] = null;
@@ -50,5 +41,5 @@ async function getDatabaseTblNames(databaseId) {
   return await apiRequest("POST", `/api/database-names`, { databaseId });
 }
 
-export { checkAccount, createDatabase, deleteDatabase, getTable, getDatabaseTblNames };
+export { deleteDatabase, getTable, getDatabaseTblNames };
 
