@@ -16,6 +16,7 @@ function Database({ setViewDB, email, databaseID }) {
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [currentTable, setCurrentTable] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
 
   const deleteDB = async () => {
     setLoading(true);
@@ -104,7 +105,21 @@ function Database({ setViewDB, email, databaseID }) {
 
   useEffect(() => {
     fetchDB();
+    setIsMobile(window.innerWidth < 768);
   }, [database, userEmail]);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      if(window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    }
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-800 py-6 flex flex-col justify-center sm:py-12 w-full max-h-screen">
@@ -112,7 +127,7 @@ function Database({ setViewDB, email, databaseID }) {
       <div className="relative py-3 sm:mx-auto">
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-light-blue-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
         <div className="relative px-4 py-10 bg-gray-100 shadow-lg sm:rounded-3xl sm:p-20 max-w-screen-xl mx-auto overflow-y-auto" 
-          style={{minWidth: "700px", maxHeight: '1000px'}}>
+          style={{minWidth: !isMobile? "700px" : "50%", maxHeight: '1000px'}}>
 
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <button

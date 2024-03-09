@@ -152,6 +152,7 @@ function Test() {
         setLoading(false);
         return;
       }
+      setStep(2);
       setEmailInput('');
       const url = `${import.meta.env.VITE_SERVER_URL}/api/account-sendVerificationCode`;
       const requestOptions = {
@@ -172,7 +173,6 @@ function Test() {
       setMessage('Verification code sent to ' + emailIn);
       setMessageColor('text-blue-500');
       setLoading(false);
-      setStep(2);
     } catch(error) {
       console.error(error);
       return;
@@ -242,7 +242,7 @@ function Test() {
 
             {
               !auth && !viewLogin && !viewSignup? (
-                <div>
+                <div style={{display: "flex"}}>
                   <button onClick={() => setViewLogin(true)}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded mx-">
                     View Existing Database
@@ -253,6 +253,7 @@ function Test() {
                     setMessageColor('text-gray-600')
                   }} 
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded mx-2">
+
                     Create New Database
                   </button>
                 </div>
@@ -291,7 +292,7 @@ function Test() {
                         onClick={() => setToggleVisability(!toggleVisability)}>
                     {!toggleVisability ? <i className="far fa-eye"></i> : <i className="far fa-eye-slash"></i>}
                   </div>
-                    <input type={step === 3 && toggleVisability ? "password" : "text"}
+                    <input type={step === 3 && toggleVisability ? "password" : step === 2 ? "number" : "text"}
                       onChange={(e) => setEmailInput(e.target.value)}
                         value={emailInput}
                       className="border-2 border-gray-400 p-2 w-full rounded-md" placeholder={`${step === 1 ? "Enter Email" : step === 2 ? "Enter Code" : "Create Password"}`} />
@@ -340,7 +341,7 @@ function Test() {
               <i className="fas fa-arrow-left text-blue-500 cursor-pointer" onClick={() => {
                 setViewLogin(false)
                 setViewSignup(false)
-                setMessage(defaultMessage)
+                setMessage(!auth ? defaultMessage : 'Welcome, Here is your database connection string!')
                 setMessageColor('text-gray-600')
               }}></i>
                 )
