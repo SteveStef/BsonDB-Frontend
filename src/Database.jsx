@@ -21,8 +21,6 @@ function Database({ setViewDB, email, databaseID }) {
   const deleteDB = async () => {
     setLoading(true);
     if(!database || !userEmail) {
-      setMessage('Enter your email in the first page... idk who you are');
-      setMessageColor('text-red-500');
       setLoading(false);
       return;
     }
@@ -177,7 +175,7 @@ function Database({ setViewDB, email, databaseID }) {
                       <tr key={i}>
                         {Object.values(obj).map((value, index) => (
                           <td key={index} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {typeof value === 'object' ? JSON.stringify(value) : value}
+                            {typeof value === 'object' || typeof value === 'boolean' ? JSON.stringify(value) : value}
                           </td>
                         ))}
                       </tr>
