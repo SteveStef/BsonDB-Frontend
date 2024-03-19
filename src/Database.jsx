@@ -48,7 +48,6 @@ function Database({ setViewDB, email, databaseID }) {
       return;
     }
     const result = await getDatabaseTblNames(database);
-    //console.log(result);
     if(!result || result.error) {
       console.log(result);
       setMessage('There was an error ' + result? result.error : 'retrieving the database tables');
@@ -125,7 +124,7 @@ function Database({ setViewDB, email, databaseID }) {
       <div className="relative py-3 sm:mx-auto">
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-light-blue-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
         <div className="relative px-4 py-10 bg-gray-100 shadow-lg sm:rounded-3xl sm:p-20 max-w-screen-xl mx-auto overflow-y-auto" 
-          style={{minWidth: !isMobile? "700px" : "50%", maxHeight: '1000px'}}>
+          style={{minWidth: !isMobile? "700px" : "50%", maxHeight: '795px'}}>
 
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <button
